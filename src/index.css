@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif !important;
+}
+
+html{
+    background-color: rgb(244,244,244);
+}
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #db36a4 !important;
+}
+
+.css-1kty9di-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: #db36a4 !important;
+}
+
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #db36a4 !important;
+}
+
+.css-kw4yk8-MuiInputBase-root-MuiFilledInput-root:after{
+    border-bottom: 2px solid #db36a4 !important;
+}
+.css-1t63s3p-MuiButtonBase-root-MuiButton-root{
+    background-color: #db36a4 !important;
+}
+.swiper-button-next:after, .swiper-button-prev:after{
+    color: pink;
+}

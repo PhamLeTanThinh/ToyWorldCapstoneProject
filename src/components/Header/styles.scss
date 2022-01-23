@@ -1,0 +1,16 @@
+.TopHeader{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+
+.css-hip9hq-MuiPaper-root-MuiAppBar-root {
+    background-color: white !important;
+
+    .active {
+        border-bottom: 5px solid #DB36A4;
+        padding-bottom: 22px;
+    }
+}
