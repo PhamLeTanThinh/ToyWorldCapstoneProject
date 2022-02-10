@@ -15,11 +15,10 @@ PostDetailPage.propTypes = {
 
 function PostDetailPage(props) {
 
-    // const { params: { postId } } = useRouteMatch();
     const { params: { postId } } = useRouteMatch();
-    // console.log(postId)
     const { post, loading } = usePostDetails(postId);
-    console.log(post.data);
+    console.log("post By id: ",post)
+
 
     return (
         <div>
@@ -28,8 +27,8 @@ function PostDetailPage(props) {
             <GroupBar />
             <Container maxWidth="md">
                 <Card>
-                    {loading ? <p>loading</p> : <Post post={post.data} />}
-                    {loading ? <p>loading</p> : <CommentList comments={post.data.comments} />}
+                    {loading ? <p>loading</p> : <PostDetail post={post.data} />}
+                    {loading ? <p>loading</p> : <CommentList postId={postId} comments={post.data.comments} />}
                 </Card>
 
 

@@ -54,16 +54,9 @@ function CrawlDataUnit(props) {
                         // bgcolor: 'background.paper',
                     }}
                 >
-                    {crawlDataUnits.map(unit => {
+                    {crawlDataUnits.map((unit, index) => {
                         return (
-                            <img src={unit.url} alt="" />
-                            // <Card sx={{ maxWidth: 200, }} >
-                            //     <CardMedia component="img"
-                            //         alt="toyimg"
-                            //         height="50"
-                            //         width="100"
-                            //         image={unit.url} />
-                            // </Card>
+                            <img key={index} src={unit.url} alt="" />
                         )
                     })}
                 </Box>

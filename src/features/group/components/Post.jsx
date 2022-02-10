@@ -9,7 +9,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
-import { red } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
@@ -64,8 +63,6 @@ const useStyle = makeStyles(theme => ({
 function Post({ post }) {
 
     const srcList = post.images;
-    console.log(srcList)
-
     const classes = useStyle();
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('md');
@@ -73,8 +70,6 @@ function Post({ post }) {
 
     const handleShowImageDialog = () => {
         setOpen(true);
-        // return srcList(index);
-        // console.log(srcList(index));
     }
     const handleClose = () => {
         setOpen(false);

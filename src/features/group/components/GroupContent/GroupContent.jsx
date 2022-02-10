@@ -5,6 +5,7 @@ import PostList from './../PostList/index';
 import { Grid, Container, Box, Card } from '@mui/material';
 import {useParams} from 'react-router-dom';
 import postApi from './../../../../api/postApi';
+import PostSkeleton from './../../../../components/PostSkeleton/PostSkeleton';
 
 function GroupContent(props) {
 
@@ -102,9 +103,9 @@ function GroupContent(props) {
                             {/* Form to create a post */}
                             <CreatePost onSubmit={handleCreatePostSubmit} />
 
-                            {/* List post */}
+                            {/* get List post */}
 
-                            {loading ? <h1>Loading</h1>: <PostList postList={postList} />}
+                            {loading ? <PostSkeleton/>: <PostList postList={postList} />}
                             
                         </Grid>
                         <Grid item xs={4}>

@@ -22,6 +22,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useHistory } from 'react-router';
+import postApi from './../../../../api/postApi';
 
 
 PostDetail.propTypes = {
@@ -63,33 +64,48 @@ const useStyle = makeStyles(theme => ({
     },
     heartIcon: {
         color: '#ED213A'
+    },
+    unHeartIcon: {
+        // color: '#ED213A'
     }
 }))
 
 function PostDetail(props) {
     const classes = useStyle();
     const { post } = props;
-    // console.log('postdetail',post)
+    console.log("post", post)
     const srcList = post.images;
     const history = useHistory();
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('md');
     const [open, setOpen] = React.useState(false);
 
+    const [isLiked, setIsLiked] = React.useState(post.isLikedPost);
+    const [numOfLiked, setNumOfLiked] =  React.useState(post.numOfReact);
+
     const handleShowImageDialog = () => {
         setOpen(true);
-        // return srcList(index);
-        // console.log(srcList(index));
     }
     const handleClose = () => {
         setOpen(false);
     };
 
-    const [isLike, setIsLike] = useState(false); 
-
     const handleClick = () => {
-        // Navigate to detail page: /toy/:toyId
         history.push(`/post/${post.id}`);
+    }
+
+    const handleOpenProfile = () => {
+        // history.push(`/account/${account.id}`)
+    }
+
+    const handleEmotionClick = async () => {
+        try {
+            const response = await postApi.reactPost(post.id)            
+            setIsLiked(response.data.isLiked);
+            setNumOfLiked(response.data.numOfReact);
+        } catch (error) {
+            console.log('Failed to reactPost', error)
+        }
     }
 
     return (
@@ -105,11 +121,11 @@ function PostDetail(props) {
                     </IconButton>
                 }
                 title={post.ownerName}
-                subheader={post.publicDate}
+                onClick={handleOpenProfile}
+                subheader={new Date(post.publicDate).toISOString().slice(0, 19).replace('T', ' ')}
             />
 
             <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>
-
                 {srcList.length === 1 ?
                     srcList.map((source, index) => (
                         <Box onClick={handleShowImageDialog} key={index} gridColumn="span 12" sx={{
@@ -234,21 +250,25 @@ function PostDetail(props) {
                 </DialogContent>
             </Dialog>
 
-
-
-
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
                     {post.content}
                 </Typography>
             </CardContent>
+            
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon className={classes.heartIcon}/>
+
+                {/* Like icon - like number */}
+                <IconButton onClick={handleEmotionClick} aria-label="add to favorites">
+                    {isLiked===true? <FavoriteIcon  className={classes.heartIcon}/> : <FavoriteIcon  className={classes.unHeartIcon}/>}
                 </IconButton>
+                <Typography>{numOfLiked}</Typography>
+
+                {/* comment icon - comment number */}
                 <IconButton onClick={handleClick} aria-label="share">
                     <CommentIcon />
                 </IconButton>
+                <Typography>{post.numOfComment}</Typography>
             </CardActions>
         </Card>
     );

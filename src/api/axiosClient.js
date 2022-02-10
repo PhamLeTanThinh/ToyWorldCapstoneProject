@@ -1,10 +1,11 @@
 import axios from "axios"
 
+const token = localStorage.getItem("access_token");
 const axioClient = axios.create({
-  // baseURL: 'https://api.ezfrontend.com/',
   baseURL: 'https://tws-system-release.herokuapp.com/api/',
   headers: {
     'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + token
   },
 });
 

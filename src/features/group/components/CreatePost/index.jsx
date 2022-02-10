@@ -187,7 +187,6 @@ function CreatePost(props) {
                         <Input accept="image/* video/*" id="contained-button-file" multiple type="file" onChange={handleFileChange} />
                         <Button sx={{ backgroundColor: "db36a4 !important" }} variant="contained" aria-label="upload picture" onClick={handleChoose} component="span" endIcon={<PhotoCamera />}>
                             Photo/Video
-
                         </Button>
                     </label>
 

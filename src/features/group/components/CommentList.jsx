@@ -4,6 +4,7 @@ import CommentDetail from './CommentDetail';
 import InputField from './../../../components/form-controls/InputFields/index';
 import { makeStyles } from '@mui/styles';
 import { useForm } from 'react-hook-form';
+import commentApi from './../../../api/commentApi';
 CommentList.propTypes = {
 
 };
@@ -36,16 +37,14 @@ const useStyles = makeStyles(theme => ({
     },
     form: {
         // width: '90% !important',
-        padding: '0 20px'
+        padding: '0 20px',
     },
 
 }))
-function CommentList({ comments }) {
+function CommentList({ comments, postId }) {
 
     const classes = useStyles();
-
-
-
+    // console.log(postId)
     const form = useForm({
         defaultValues: {
             comment: '',
@@ -57,22 +56,27 @@ function CommentList({ comments }) {
 
 
     const handleSubmit = async (values) => {
-        // const { onSubmit } = props;
-        // if (onSubmit) {
-        //     await onSubmit(values);
-        // }
-        // form.reset();
+        console.log("value: ", values)
+        const newComment = {
+            postId: postId,
+            content: values,
+        }
+        try{
+            const response = await commentApi.addNewComment(newComment)
+            
+        }catch (error) {
+            console.log('Failed create comment: ', error);
+        }
+        form.reset();
     }
 
     return (
         <div>
-
-
             <form className={classes.form} onSubmit={form.handleSubmit(handleSubmit)}>
                 <InputField className="inputField" className={classes.inputtext} name="comment" label="Comment" form={form} />
             </form>
             {comments.map((comment) => (
-                <CommentDetail key={comment.id} comment={comment}/>
+                <CommentDetail key={comment.id} comment={comment} />
             ))}
         </div>
     );

@@ -9,35 +9,6 @@ PostList.defaultProps = {
     postList: [],
 }
 
-
-
-const sourceList = [
-    {
-        url: 'images/toys1.jpg',
-    },
-    {
-        url: 'images/toys2.jpg',
-    },
-    {
-        url: 'images/toys3.jpg',
-    },
-    {
-        url: 'images/toys4.jpg',
-    },
-    // {
-    //     url: 'images/toys4.jpg',
-    // },
-    // {
-    //     url: 'images/toys4.jpg',
-    // },
-    // {
-    //     url: 'images/toys3.jpg',
-    // },
-    // {
-    //     url: 'images/toys4.jpg',
-    // },
-]
-
 function PostList(props) {
     const { postList } = props;
 

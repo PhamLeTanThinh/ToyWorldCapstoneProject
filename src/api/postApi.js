@@ -7,19 +7,20 @@ const postApi = {
         return axioClient.get(url);
     },
 
-    // getToyByTypeName(typeName){
-    //     const url = `/toys/type/${typeName}`;
-    //     return axioClient.get(url);
-    // },
+    getAllByAccount(id) {
+        const url = `posts/account/${id}`;
+        return axioClient.get(url);
+    },
 
-    // get(id){
-    //     const url = `/toys/details/${id}`;
-    //     return axioClient.get(url);
-    // },
 
     get(id){
         const url = `/posts/details/${id}`;
         return axioClient.get(url);
+    },
+
+    reactPost(id){
+        const url = `/posts/reacts/${id}`;
+        return axioClient.put(url);
     },
 
     add(data) {

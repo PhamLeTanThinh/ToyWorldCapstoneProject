@@ -1,24 +1,27 @@
-import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import BalanceIcon from '@mui/icons-material/Balance';
 import Chat from '@mui/icons-material/Chat';
 import Home from '@mui/icons-material/Home';
-import BalanceIcon from '@mui/icons-material/Balance';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SearchIcon from '@mui/icons-material/Search';
 import { Avatar } from '@mui/material';
-import { NavLink } from 'react-router-dom'
-import './styles.scss'
+import AppBar from '@mui/material/AppBar';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import InputBase from '@mui/material/InputBase';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { alpha, styled } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
 import { makeStyles } from '@mui/styles';
+import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, Redirect } from 'react-router-dom';
+import { logout } from '../../features/authentication/accountSlice';
+import {useHistory} from 'react-router';
+import './styles.scss';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -75,11 +78,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function Header() {
 
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const loggedInAccount = useSelector(state => state.account.current);
+  // console.log(loggedInAccount)
+  const AccountAvatar = loggedInAccount.avatar;
+  const AccountId = loggedInAccount.accountId;
+
+  const history = useHistory();
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -94,9 +105,24 @@ function Header() {
     handleMobileMenuClose();
   };
 
+  const handleLogoutClick = () => {
+    const action = logout();
+    dispatch(action);
+  }
+
+  const handleOpenProfile = () => {
+    history.push(`/account/${AccountId}`)
+  }
+  const handleOpenSetting = () => {
+    // if(!AccountId) return;
+    history.push(`setting/account/${AccountId}`)
+    // <Redirect to="/setting/account/edit" />
+  }
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -115,11 +141,14 @@ function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleOpenProfile}>Profile</MenuItem>
+      <MenuItem onClick={handleOpenSetting}>Setting</MenuItem>
+      <MenuItem onClick={handleLogoutClick}>Log out</MenuItem>
     </Menu>
   );
 
+
+  // RENDER MOBILE RESSPONSIVE MENU
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -196,7 +225,7 @@ function Header() {
           {/* ===============MIDDLE HEADER  */}
           <Box sx={{ flexGrow: 1, textAlign: 'center', }} >
 
-            <NavLink activeClassName="active" to="/home">
+            <NavLink activeClassName="active" to="/">
               <IconButton size="large" >
                 <Home sx={{ fontSize: 38 }} />
               </IconButton>
@@ -247,10 +276,11 @@ function Header() {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
             >
-              <Avatar src='/avatar.jpg'></Avatar>
+              <Avatar src={AccountAvatar}></Avatar>
             </IconButton>
           </Box>
 
+          {/* Avatar account show more ressponsive */}
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"

@@ -44,8 +44,10 @@ function Home(props) {
         (async () => {
             try {
                 const response = await eventApi.getHighLight()
-                console.log(response.data);
                 setListHighLight(response.data)
+                return () => {
+                    setListHighLight({})
+                }
             } catch (error) {
                 console.log('Failed to fetch categorylist', error)
             }
@@ -130,7 +132,7 @@ function Home(props) {
                         >
                             {ToysHomePage.map((toy) => {
                                 return (
-                                    <Card sx={{ maxWidth: 500, }} >
+                                    <Card key={toy.ToysTitle} sx={{ maxWidth: 500, }} >
                                         <NavLink to="/toys">
                                             <div className='ShineEffect'>
                                                 <CardMedia className='cardMedia' className={classes.cardMedia}

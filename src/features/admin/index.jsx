@@ -8,7 +8,7 @@ Admin.propTypes = {
 function Admin(props) {
     return (
         <div>
-            
+            Hello
         </div>
     );
 }

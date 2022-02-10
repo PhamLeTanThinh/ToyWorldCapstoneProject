@@ -14,8 +14,6 @@ ToyList.defaultProps = {
 }
 
 function ToyList({ data }) {
-
-
     return (
         <Box>
             {data.length <= 0 ?
@@ -33,13 +31,6 @@ function ToyList({ data }) {
                     ))}
                 </Grid>
             }
-            {/* {data.map((toy) => (
-                    toy?
-                    <Grid key={toy.id} item xs={12} sm={6} md={4} lg={4}>
-                        <Toy toy={toy} />
-                    </Grid>
-                    : <Typography>Opps</Typography>
-                ))} */}
         </Box>
     );
 }

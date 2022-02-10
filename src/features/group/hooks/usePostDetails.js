@@ -4,16 +4,11 @@ import postApi from './../../../api/postApi';
 
 export default function usePostDetails(postId) {
 
-    console.log(postId);
 
     const [post, setPost] = useState({})
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        console.log('effect');
-
-
-
         (async () => {
             try{
                 const result = await postApi.get(postId);

@@ -5,6 +5,7 @@ import { auth } from './../../../../Firebase/firebase';
 import { signInWithPopup, GoogleAuthProvider} from "firebase/auth"
 import GoogleButton from 'react-google-button'
 import accountApi from './../../../../api/accountApi';
+import StorageKeys from './../../../../constants/storage-keys';
 
 
 AuthContextProvider.propTypes = {
@@ -15,18 +16,6 @@ const AuthContext = createContext({
 })
 function AuthContextProvider({children}) {
 
-    // const [currentUser, setCurrentUser] = useState(null);
-
-    // const value = {
-    //     currentUser,
-    // }
-
-    // export const useAuth = () => useContext(Au)
-
-    // return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-    // return <AuthCon
-    // // const [user, setUser] = useState({});
-
     // // onAuthStateChanged
     const [tokentId, setTokenId ] = useState('');
 
@@ -34,7 +23,10 @@ function AuthContextProvider({children}) {
     const LoginWithGg = () => {
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider).then((re) => {
-            console.log(re.user.accessToken);
+
+            // localStorage.setItem(StorageKeys.TOKEN, re.user.accessToken);
+            // localStorage.setItem(StorageKeys.ACCOUNT, JSON.stringify(re.user));
+            console.log(re.user);
             setTokenId(re.user.accessToken);
             // firebaseToken = tokenId;
         })
@@ -45,17 +37,18 @@ function AuthContextProvider({children}) {
         // iff result != null => msg success
     }
 
-    useEffect(() => {
-        const getInfoUser = async () => {
-            try {   
-                    const response = await accountApi.loginByGoogle(tokentId);
-                    console.log(response)
-            } catch (error) {
-                console.log('Failed to login by gg: ', error);
-            }
-        }
-        getInfoUser();
-    },)
+    // useEffect(() => {
+    //     const getInfoUser = async () => {
+    //         try {   
+    //             console.log(tokentId)
+    //                 const response = await accountApi.loginByGoogle(tokentId);
+    //                 console.log(response)
+    //         } catch (error) {
+    //             console.log('Failed to login by gg: ', error);
+    //         }
+    //     }
+    //     getInfoUser();
+    // },)
 
     return (
         <GoogleButton style={{width: '100%',}} onClick={LoginWithGg}>

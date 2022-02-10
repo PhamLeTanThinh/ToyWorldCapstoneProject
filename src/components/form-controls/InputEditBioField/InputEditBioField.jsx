@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { Controller } from 'react-hook-form';
 
 
-InputField.propTypes = {
+InputEditBioField.propTypes = {
     form: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
 
@@ -13,8 +13,8 @@ InputField.propTypes = {
     disabled: PropTypes.bool,
 };
 
-function InputField(props) {
-    const { form, name, label, disabled, value } = props;
+function InputEditBioField(props) {
+    const { form, name, label, disabled } = props;
     const { errors } = form;
 
     const hasError = errors[name];
@@ -25,13 +25,13 @@ function InputField(props) {
             control={form.control}
             as={TextField}
 
-            fullWidth
             label={label}
             disabled={disabled}
             variant="outlined"
             margin="normal"
-            value={value}
-            
+            multiline
+            fullWidth
+            rows={4}            
 
             error={!!hasError}
             helperText={errors[name]?.message}
@@ -39,4 +39,4 @@ function InputField(props) {
     );
 }
 
-export default InputField;
+export default InputEditBioField;

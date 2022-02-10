@@ -8,7 +8,7 @@ const eventApi = {
     },
 
     add(data) {
-
+        
     },
 
     update(data) {
