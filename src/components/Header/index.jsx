@@ -20,12 +20,28 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { logout } from '../../features/authentication/accountSlice';
-import {useHistory} from 'react-router';
+import { useHistory } from 'react-router';
 import './styles.scss';
 
 const useStyles = makeStyles(theme => ({
   root: {
 
+  },
+  TopHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    "& .MuiPaper-root": {
+      backgroundColor: 'white !important',
+
+    },
+  },
+  middleHeader: {
+    "& .active": {
+      borderBottom: '5px solid #DB36A4 !important',
+      paddingBottom: '22px',
+    }
   },
 
 }))
@@ -110,6 +126,7 @@ function Header() {
     dispatch(action);
   }
 
+  // Onclick redirect to Profile
   const handleOpenProfile = () => {
     history.push(`/account/${AccountId}`)
   }
@@ -124,6 +141,7 @@ function Header() {
   };
 
 
+  // Menu in avatar
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -200,9 +218,10 @@ function Header() {
       </MenuItem>
     </Menu>
   );
+  // END OF RENDER MOBILE RESPONSIVE
 
   return (
-    <Box className="TopHeader" sx={{ flexGrow: 1 }}>
+    <Box className="TopHeader" className={classes.TopHeader} sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
 
@@ -223,8 +242,9 @@ function Header() {
           {/* end search */}
 
           {/* ===============MIDDLE HEADER  */}
-          <Box sx={{ flexGrow: 1, textAlign: 'center', }} >
+          <Box className={classes.middleHeader} sx={{ flexGrow: 1, textAlign: 'center', }} >
 
+            {/* Home Icon */}
             <NavLink activeClassName="active" to="/">
               <IconButton size="large" >
                 <Home sx={{ fontSize: 38 }} />

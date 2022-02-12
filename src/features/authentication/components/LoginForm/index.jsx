@@ -22,26 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
 
     button: {
-
         background: 'linear-gradient(45deg, #F7FF00 30%, #DB36A4 90%)'
-    },
-    inputtext: {
-       "& .Mui-focused": {
-           color: 'pink',
-           borderColor: 'pink'
-       },
-       '& .MuiOutlinedInput-root': {
-        '& .MuiOutlinedInput-notchedOutline-focused': {
-          borderColor: 'pink',
-        },
-        '&:hover fieldset': {
-          borderColor: 'pink',
-        },
-        '&.Mui-focused fieldset': {
-          borderColor: 'pink',
-        },
-      },
-
     },
     progres: {
         position: 'absolute',
