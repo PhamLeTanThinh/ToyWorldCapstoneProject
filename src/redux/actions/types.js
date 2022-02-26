@@ -1,0 +1,20 @@
+export const SET_LOADING = 'SET_LOADING'
+
+export const ACCOUNT = {
+    SET_ACCOUNT: 'SET_ACCOUNT',
+    SET_ACCOUNTS: 'SET_ACCOUNTS',
+    SET_ERROR_MESSAGE: 'SET_ERROR_MESSAGE',
+    SET_CLEAR_ERROR_MESSAGE: 'SET_CLEAR_ERROR_MESSAGE',
+}
+
+export const GROUP = {
+    SET_GROUPS: 'SET_GROUPS',
+}
+
+export const POST = {
+    SET_POSTS: 'SET_POSTS',
+}
+
+
+
+

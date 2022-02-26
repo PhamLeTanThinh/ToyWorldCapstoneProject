@@ -22,8 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
 
     button: {
-
-        background: 'linear-gradient(45deg, #F7FF00 30%, #DB36A4 90%)'
+        background: 'linear-gradient(45deg, #F7FF00 30%, #DB36A4 90%)',
     },
     inputtext: {
        "& .Mui-focused": {
@@ -106,7 +105,8 @@ function LoginForm(props) {
                 <InputField className="inputField" className={classes.inputtext} name="identifier" label="Email" form={form} />
                 <PasswordField className={classes.inputtext} name="password" label="Password" form={form} />
 
-                <Button disabled={isSubmitting} type='submit' className={classes.button} variant='contained' fullWidth>
+                {/* <Button disabled={isSubmitting} type='submit' className={classes.button} variant='contained' fullWidth> */}
+                <Button disabled={isSubmitting} type='submit' className="btn-login" variant='contained' fullWidth>
                     Sign in
                 </Button>
 

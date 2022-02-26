@@ -1,30 +1,57 @@
 import axios from "axios"
 
-const axioClient = axios.create({
-  // baseURL: 'https://api.ezfrontend.com/',
-  baseURL: 'https://tws-system-release.herokuapp.com/api/',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// const axioClient = axios.create({
+//   // baseURL: 'https://api.ezfrontend.com/',
+//   baseURL: 'https://tws-system-release.herokuapp.com/api/',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+axios.defaults.baseURL = 'https://tws-system-release.herokuapp.com/api/'
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
+axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*'
+
+export const axioClient = {
+    get(url, slug = '') {
+        return axios.get(`${url}/${slug}`).catch(error => console.log(error))
+    },
+    post(url, params, config) {
+        return axios.post(`${url}`, params, config)
+    },
+    put(url, params, config) {
+        return axios.put(`${url}`, params, config)
+    },
+    saveToken(token, expired) {
+        window.localStorage.setItem('token', JSON.stringify(token))
+    },
+    getToken() {
+        if (typeof window === 'undefined') {
+            return null
+        }
+        return JSON.parse(window.localStorage.getItem('token'))
+    },
+    setHeaderAuth(token) {
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`
+    },
+    clearToken() {
+        
+    }
+}
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
-  // Do something before request is sent
-  return config;
+    return config;
 }, function (error) {
-  // Do something with request error
-  return Promise.reject(error);
+    return Promise.reject(error);
 });
 
-// Add a response interceptor
 axios.interceptors.response.use(function (response) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
-  return response.data;
+    return response.data;
 },
 
-  function (error) {
+function (error) {
 
     // const { config, status, data } = error.response;
 
@@ -38,9 +65,7 @@ axios.interceptors.response.use(function (response) {
 
     //   throw new Error(firstMessage.message)
     // }
-
     return Promise.reject(error);
-  });
-
+});
 
 export default axioClient;
