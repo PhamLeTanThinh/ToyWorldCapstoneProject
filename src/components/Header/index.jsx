@@ -270,7 +270,7 @@ function Header() {
   // END OF RENDER MOBILE RESPONSIVE
 
   return (
-    <Box className="TopHeader" className={classes.TopHeader} sx={{ flexGrow: 1 }}>
+    <Box className={classes.TopHeader} sx={{ flexGrow: 1 }}>
 
       <AppBar position="static">
         <Toolbar>
@@ -295,7 +295,7 @@ function Header() {
           <Box className={classes.middleHeader} sx={{ flexGrow: 1, textAlign: 'center', }} >
 
             {/* Home Icon */}
-            <NavLink activeClassName="active" to="/">
+            <NavLink exact  to="/home">
               <IconButton size="large" >
                 <Home sx={{ fontSize: 38 }} />
               </IconButton>
@@ -303,14 +303,14 @@ function Header() {
 
 
             {/* Notification icon */}
-            <NavLink activeClassName="active" to="/trading/1">
+            <NavLink to="/trading/1">
               <IconButton size="large">
                 <BalanceIcon sx={{ fontSize: 38 }} />
               </IconButton>
             </NavLink>
 
             {/* Icon toys */}
-            <NavLink activeClassName="active" to="/toys">
+            <NavLink to="/toys">
               <IconButton size="large">
                 <Avatar src='/toys.png' sx={{ height: '38px', width: '40px' }}></Avatar>
               </IconButton>

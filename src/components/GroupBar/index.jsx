@@ -40,8 +40,9 @@ function GroupBar(props) {
                     display: 'flex',
                     justifyContent: 'space-evenly',
                     p: 1,
-                    m: 1,
+                    mb: 1,
                     bgcolor: 'background.paper',
+                    boxShadow: "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;"
                 }}
             >
                 {groupList?.map((group) => (

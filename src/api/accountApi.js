@@ -40,7 +40,15 @@ const accountApi = {
             axioClient.setHeaderAuth(token)
             return axioClient.get('/accounts/follower', id)
         }
-    }
+    },
+
+    getAll() {
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.get('/accounts')
+        }
+    },
 };
 
 export default accountApi;
