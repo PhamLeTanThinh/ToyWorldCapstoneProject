@@ -76,8 +76,8 @@ function App() {
         <PrivateRoute path="/contest/:contestId" component={Contest} exact roles={[1, 2]} />
 
         {/* Message */}
-        <PrivateRoute path="/message" component={message} exact roles={[1, 2]} />
-        <PrivateRoute path="/message/:id" component={message} exact roles={[1, 2]} />
+        <PrivateRoute path="/message" component={message} exact roles={[0, 1, 2]} />
+        <PrivateRoute path="/message/:id" component={message} exact roles={[0, 1, 2]} />
 
         {/* Admin */}'
         
