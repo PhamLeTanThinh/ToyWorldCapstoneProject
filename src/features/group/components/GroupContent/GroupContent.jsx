@@ -43,18 +43,6 @@ function GroupContent(props) {
 
 
 
-    const handleCreatePostSubmit = (values) => {
-        // console.log('Post submit: ', values);
-        // const newPost = {
-        //     id: initPostList.lenght + 1,
-        //     userName: 'Current User',
-        //     avatar: 'avatar.jpg',
-        //     postContent: values.postContent,
-        //     postTime: 'test'
-        // }
-        // const newPostList = [...initPostList, newPost];
-        // setPostList(newPostList);
-    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -62,7 +50,7 @@ function GroupContent(props) {
                 <Grid container spacing={2}>
                     <Grid item xs={8}>
                         {/* Form to create a post */}
-                        <CreatePost groupId={groupId} onSubmit={handleCreatePostSubmit} />
+                        <CreatePost groupId={groupId}  />
 
                         {/* get List post */}
 

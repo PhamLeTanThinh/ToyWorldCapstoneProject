@@ -33,7 +33,7 @@ const eventApi = {
         const token = axioClient.getToken();
         if (token) {
             axioClient.setHeaderAuth(token)
-            return axioClient.getMiddleParams('/contest', id,'details')
+            return axioClient.getMiddleParams('/contest', id, 'details')
         }
     },
 
@@ -41,15 +41,15 @@ const eventApi = {
         const token = axioClient.getToken();
         if (token) {
             axioClient.setHeaderAuth(token)
-            return axioClient.getMiddleParams('/contest', id,'rewards')
+            return axioClient.getMiddleParams('/contest', id, 'rewards')
         }
     },
-    
+
     getPostOfContest(id) {
         const token = axioClient.getToken();
         if (token) {
             axioClient.setHeaderAuth(token)
-            return axioClient.getMiddleParams('/contest', id,'posts')
+            return axioClient.getMiddleParams('/contest', id, 'posts')
         }
     },
 
@@ -61,8 +61,19 @@ const eventApi = {
         }
     },
 
-    add(data) {
-        
+    getBrand() {
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.get('/contest/create/brand')
+        }
+    },
+    getType() {
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.get('/contest/create/type')
+        }
     },
 
     update(data) {

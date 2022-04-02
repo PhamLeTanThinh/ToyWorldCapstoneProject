@@ -30,8 +30,14 @@ export const axioClient = {
     postWithId(url,slug, params, config) {
         return axios.post(`${url}/${slug}`, params, config)
     },
+    postMiddleId(url,slug,url2, params, config) {
+        return axios.post(`${url}/${slug}/${url2}`)
+    },
     put(url, params, config) {
         return axios.put(`${url}`, params, config)
+    },
+    putMiddleParams(url, params, url2, slug) {
+        return axios.put(`${url}`, params, `${url2}`, slug)
     },
     delete(url, params, config) {
         return axios.delete(`${url}`, params, config)

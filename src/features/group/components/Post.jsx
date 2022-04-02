@@ -20,6 +20,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useHistory } from 'react-router';
+
 
 Post.propTypes = {
     post: PropTypes.object,
@@ -67,7 +69,7 @@ function Post({ post }) {
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('md');
     const [open, setOpen] = React.useState(false);
-
+    const history = useHistory();
     const handleShowImageDialog = () => {
         setOpen(true);
     }
@@ -76,13 +78,20 @@ function Post({ post }) {
     };
 
     const [isLike, setIsLike] = useState(false);
+    const handleOpenProfile = () => {
+        history.push(`/account/${post.ownerId}`)
+    }
 
     return (
         <div>
             <Card sx={{ maxWidth: '100%', marginTop: 2 }}>
                 <CardHeader
                     avatar={
-                        <Avatar src={post.ownerAvatar}>
+                        <Avatar onClick={handleOpenProfile} sx={{
+                            '&:hover': {
+                                cursor: 'pointer',
+                            },
+                        }} src={post.ownerAvatar}>
                         </Avatar>
                     }
                     action={
@@ -92,7 +101,6 @@ function Post({ post }) {
                     }
                     title={post.ownerName}
                     subheader={new Date(post.publicDate).toISOString().slice(0, 19).replace('T', ' ')}
-                    // .toISOString().split('T')[0]
                 />
 
                 <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>

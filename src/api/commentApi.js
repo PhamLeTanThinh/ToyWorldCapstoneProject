@@ -14,6 +14,14 @@ const commentApi = {
         }
     },
 
+    addNewCommentTrading(data) {
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.post('/comments/news/trading_post', data)
+        }
+    },
+
     update(data) {
 
     },

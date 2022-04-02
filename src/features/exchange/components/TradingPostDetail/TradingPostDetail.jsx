@@ -1,9 +1,12 @@
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import BalanceIcon from '@mui/icons-material/Balance';
 import CommentIcon from '@mui/icons-material/Comment';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { DialogContent } from '@mui/material';
-import { Box, Dialog } from '@mui/material/';
+import { Box, Dialog, Divider, Typography } from '@mui/material/';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -11,28 +14,26 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import { red } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { Navigation, Pagination } from 'swiper';
-import { useDispatch, useSelector } from 'react-redux';
+import { addDoc, collection, serverTimestamp, setDoc, Timestamp, doc, updateDoc } from 'firebase/firestore';
+import tradingPostApi from './../../../../api/TradingPostApi';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useHistory } from 'react-router';
-import postApi from './../../../../api/postApi';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { db } from '../../../../Firebase/firebase';
 
-PostDetail.propTypes = {
+TradingPostDetail.propTypes = {
     post: PropTypes.object,
 };
-PostDetail.defaultProps = {
-
-}
 
 const useStyle = makeStyles(theme => ({
     root: {
@@ -47,7 +48,6 @@ const useStyle = makeStyles(theme => ({
     },
     onClickOpenImg: {
         filter: 'brightness(40%)',
-
     },
     text: {
         position: 'absolute',
@@ -69,25 +69,59 @@ const useStyle = makeStyles(theme => ({
     },
     unHeartIcon: {
         // color: '#ED213A'
+    },
+    title: {
+        fontSize: '2rem !important'
+    },
+    content: {
+        padding: '10px 0'
+    },
+    brand: {
+        color: 'grey',
+        fontStyle: 'italic',
+        fontSize: '15px',
+    },
+    type: {
+        color: 'grey',
+        fontStyle: 'italic',
+        fontSize: '15px',
+        paddingBottom: '10px'
+    },
+    open: {
+        color: '#de6161',
+        letterSpacing: '5px !important',
+        textTransform: 'uppercase'
+    },
+    exchanging: {
+        color: '#de6161',
+        letterSpacing: '5px !important',
+        textTransform: 'uppercase'
+    },
+    close: {
+        color: 'green',
+        letterSpacing: '5px !important',
+        textTransform: 'uppercase'
     }
+
 }))
 
-function PostDetail({ post }) {
+function TradingPostDetail({ tradingPost }) {
 
     const currentUser = useSelector(state => state.account.current);
+    const currentUserId = currentUser.accountId
     console.log("currentUser: ", currentUser);
-    console.log("post: ", post);
+    console.log("tradingPost: ", tradingPost);
 
     const classes = useStyle();
 
-    const srcList = post.images;
+    const srcList = tradingPost.images;
     const history = useHistory();
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('md');
     const [open, setOpen] = React.useState(false);
 
-    const [isLiked, setIsLiked] = React.useState(post.isLikedPost);
-    const [numOfLiked, setNumOfLiked] = React.useState(post.numOfReact);
+    const [isLiked, setIsLiked] = React.useState(tradingPost.isLikedPost);
+    const [numOfLiked, setNumOfLiked] = React.useState(tradingPost.noOfReact);
 
     const handleShowImageDialog = () => {
         setOpen(true);
@@ -96,8 +130,9 @@ function PostDetail({ post }) {
         setOpen(false);
     };
 
+
     const handleClick = () => {
-        history.push(`/post/${post.id}`);
+        history.push(`/tradingPost/${tradingPost.id}`);
     }
 
     // More icon open
@@ -107,14 +142,14 @@ function PostDetail({ post }) {
         setAnchorEl(event.currentTarget);
     };
     const handleCloseDelete = async () => {
-        try {
-            console.log("post.id: ", post.id)
-            const response = await postApi.deletePost(post.id)
-            console.log('delete: ', response)
-        } catch (error) {
-            console.log("error: ", error);
-        }
-        setAnchorEl(null);
+        // try {
+        //     console.log("tradingPost.id: ", tradingPost.id)
+        //     const response = await postApi.deletePost(tradingPost.id)
+        //     console.log('delete: ', response)
+        // } catch (error) {
+        //     console.log("error: ", error);
+        // }
+        // setAnchorEl(null);
     }
 
     const handleCloseReport = () => {
@@ -127,18 +162,80 @@ function PostDetail({ post }) {
 
 
     const handleOpenProfile = () => {
-        history.push(`/account/${post.ownerId}`)
+        history.push(`/account/${tradingPost.ownerId}`)
     }
 
 
     const handleEmotionClick = async () => {
 
         try {
-            const response = await postApi.reactPost(post.id);
+            const response = await tradingPostApi.reactPost(tradingPost.id);
+            console.log("response", response);
             setIsLiked(response.isLiked);
             setNumOfLiked(response.numOfReact);
         } catch (error) {
             console.log('Failed to reactPost', error)
+        }
+    }
+
+
+    const handleRedirectMsg = async () => {
+
+        let messageId = '';
+        if (currentUserId.toString() <= tradingPost.ownerId.toString()) {
+            messageId = `${currentUserId}-${tradingPost.ownerId}-${tradingPost.id}`;
+        } else {
+            messageId = `${tradingPost.ownerId}-${currentUserId}-${tradingPost.id}`;
+        }
+
+        await setDoc(doc(db, `tradingMessages/${messageId}/`),
+            {
+                isBillCreated: false,
+                timestamp: Timestamp.now(),
+                title: tradingPost ? tradingPost.title : '',
+                toyName: tradingPost ? tradingPost.toyName : '',
+                tradingPostId: tradingPost ? tradingPost.id : '',
+                sellerId: tradingPost ? tradingPost.ownerId : '',
+                contentPost: tradingPost ? tradingPost.content : '',
+                buyerId: currentUserId,
+                billId: null
+            });
+        history.push(`/TradingMessage/${messageId}`, tradingPost);
+
+
+        // LƯU BILL
+        // await addDoc(collection(db, `tradingMessages/${id}`),
+        //     {
+        //         timestamp: Timestamp.now(),
+        //         isBillCreated: 0,
+        //         titleBill: tradingPost.title,
+        //         brand: tradingPost.brand,
+        //         type: tradingPost.type,
+        //         exchange: tradingPost.exchange,
+        //         value: tradingPost.value,
+        //     });
+    }
+
+    const renderStatus = () => {
+        switch (tradingPost.status) {
+            case 0:
+                return <Typography className={classes.open}>
+                    Status: Open
+                </Typography>
+                break;
+            case 1:
+                return <Typography className={classes.exchanging}>
+                    Status: Exchanging
+                </Typography>
+                break;
+            case 2:
+                return <Typography className={classes.close}>
+                    Status: Closed
+                </Typography>
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -150,7 +247,7 @@ function PostDetail({ post }) {
                         '&:hover': {
                             cursor: 'pointer',
                         },
-                    }} src={post.ownerAvatar}>
+                    }} src={tradingPost.ownerAvatar}>
                     </Avatar>
                 }
                 action={
@@ -163,8 +260,8 @@ function PostDetail({ post }) {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={post.ownerName}
-                subheader={new Date(post.publicDate).toISOString().slice(0, 19).replace('T', ' ')}
+                title={tradingPost.ownerName}
+                subheader={new Date(tradingPost.postDate).toISOString().slice(0, 19).replace('T', ' ')}
             />
             <Menu
                 id="long-menu"
@@ -182,7 +279,7 @@ function PostDetail({ post }) {
                 }}
             >
                 {
-                    currentUser.accountId === post.ownerId ?
+                    currentUserId === tradingPost.ownerId ?
                         <MenuItem onClick={handleCloseDelete}>
                             Delete
                         </MenuItem> :
@@ -192,6 +289,8 @@ function PostDetail({ post }) {
                 }
 
             </Menu>
+
+            {/* RENDER IMAGE */}
             <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={1}>
                 {srcList.length === 1 ?
                     srcList.map((source, index) => (
@@ -290,6 +389,8 @@ function PostDetail({ post }) {
                                 </>
                                 : <></>}
             </Box>
+
+            {/* DIALOG SHOW ONCLICK IMAGE */}
             <Dialog
                 fullWidth={fullWidth}
                 maxWidth={maxWidth}
@@ -317,28 +418,61 @@ function PostDetail({ post }) {
                 </DialogContent>
             </Dialog>
 
-            <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    {post.content}
+
+            {/* CONTENT */}
+            <CardContent sx={{ paddingLeft: '30px' }}>
+                <Typography className={classes.title}>
+                    {tradingPost.title}
+                </Typography>
+                {renderStatus()}
+
+                <Divider light />
+                <Typography className={classes.content}>
+                    {tradingPost.content}
+                </Typography>
+
+                <Typography className={classes.brand}>
+                    Brand: {tradingPost.brand}
+                </Typography>
+                <Typography className={classes.type}>
+                    Type: {tradingPost.type}
+                </Typography>
+                <Divider light />
+                <Typography sx={{ display: 'flex', alignItems: 'center', pl: 2, pt: 2 }} className={classes.exchange}>
+                    <BalanceIcon sx={{ color: '#DB36A4', mr: 1 }} />  Exchange: {tradingPost.exchange}
+                </Typography>
+                <Typography sx={{ display: 'flex', alignItems: 'center', pl: 2 }} className={classes.value}>
+                    <AttachMoneyIcon sx={{ color: '#DB36A4', mr: 1 }} /> Value: {tradingPost.value}
                 </Typography>
             </CardContent>
 
-            <CardActions disableSpacing>
+            {/* CARD ACTION LIKE & COMMENT */}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <CardActions disableSpacing>
+                    {/* Like icon - like number */}
+                    <IconButton onClick={handleEmotionClick} aria-label="add to favorites">
+                        {isLiked === true ? <FavoriteIcon className={classes.heartIcon} /> : <FavoriteIcon className={classes.unHeartIcon} />}
+                    </IconButton>
+                    <Typography>{numOfLiked}</Typography>
 
-                {/* Like icon - like number */}
-                <IconButton onClick={handleEmotionClick} aria-label="add to favorites">
-                    {isLiked === true ? <FavoriteIcon className={classes.heartIcon} /> : <FavoriteIcon className={classes.unHeartIcon} />}
-                </IconButton>
-                <Typography>{numOfLiked}</Typography>
+                    {/* comment icon - comment number */}
+                    <IconButton onClick={handleClick} aria-label="share">
+                        <CommentIcon />
+                    </IconButton>
+                    <Typography>{tradingPost.noOfComment}</Typography>
+                </CardActions>
+                {
+                    currentUserId === tradingPost.ownerId ?
+                        <></> :
+                        <Button onClick={handleRedirectMsg}>
+                            Contact me
+                        </Button>
+                }
 
-                {/* comment icon - comment number */}
-                <IconButton onClick={handleClick} aria-label="share">
-                    <CommentIcon />
-                </IconButton>
-                <Typography>{post.numOfComment}</Typography>
-            </CardActions>
+            </Box>
+
         </Card>
     );
 }
 
-export default PostDetail;
+export default TradingPostDetail;

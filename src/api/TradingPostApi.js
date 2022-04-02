@@ -16,18 +16,45 @@ const tradingPostApi = {
     },
 
 
-    get(id){
-        const url = `/posts/details/${id}`;
-        return axioClient.get(url);
+    get(id) {
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.getMiddleParams('/trading_posts', id, 'detail')
+        }
     },
 
-    reactPost(id){
-        const url = `/posts/reacts/${id}`;
-        return axioClient.put(url);
+    reactPost(id) {
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.put(`/trading_posts/${id}/react`)
+        }
     },
 
-    add(data) {
+    getDataToCreateBill(id) {
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.get('/trading_posts/getdatafortradingmessage', id)
+        }
+    },
 
+
+    getDetail(id) {
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.getMiddleParams('/trading_posts', id, 'detail')
+        }
+    },
+
+    createNewTradingPost(id, data){
+        const token = axioClient.getToken();
+        if (token) {
+            axioClient.setHeaderAuth(token)
+            return axioClient.post(`/trading_posts/group/${id}`, data)
+        }
     },
 
     update(data) {

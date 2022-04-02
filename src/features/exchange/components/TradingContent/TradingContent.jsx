@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { Box, Container, Grid } from '@mui/material';
-import CreatePost from '../../../group/components/CreatePost/index';
 import PostSkeleton from '../../../../components/PostSkeleton/PostSkeleton';
 import tradingPostApi from '../../../../api/TradingPostApi';
 import TradingPostList from './../TradingPostList/TradingPostList';
+import CreateTradingPost from '../../CreateTradingPost/CreateTradingPost';
 
 TradingContent.propTypes = {
 
@@ -14,6 +14,7 @@ TradingContent.propTypes = {
 function TradingContent(props) {
 
     const { id: tradingGroupId } = useParams();
+    
     const [listTradingPost, setListTradingPost] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -44,7 +45,7 @@ function TradingContent(props) {
                     </Grid>
                     <Grid item xs={8}>
                         {/* Form to create a post */}
-                        <CreatePost onSubmit={handleCreatePostSubmit} />
+                        <CreateTradingPost tradingGroupId={tradingGroupId} onSubmit={handleCreatePostSubmit} />
 
                         {/* get List post */}
 

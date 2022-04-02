@@ -9,6 +9,8 @@ import Header from '../../components/Header';
 import GroupBar from '../../components/GroupBar';
 import { Box, Container, Card, Typography } from '@mui/material';
 import { useState } from 'react';
+import PostSkeleton from './../../components/PostSkeleton/PostSkeleton';
+import CommentSkeleton from './../../components/CommentSkeleton/CommentSkeleton';
 
 PostDetailPage.propTypes = {
 
@@ -29,8 +31,8 @@ function PostDetailPage(props) {
             <GroupBar />
             <Container maxWidth="md">
                 <Card>
-                    {loading ? <Typography>loading</Typography> : <PostDetail post={post} />}
-                    {loading ? <Typography>loading</Typography> : <CommentList postId={postId} comments={post.comments} reload={()=>setReload(!reload)} />}
+                    {loading ? <PostSkeleton length={1}/> : <PostDetail post={post} />}
+                    {loading ? <CommentSkeleton/> : <CommentList postId={postId} comments={post.comments} reload={()=>setReload(!reload)} />}
                 </Card>
 
 

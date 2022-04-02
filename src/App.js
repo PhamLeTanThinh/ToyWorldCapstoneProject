@@ -30,6 +30,8 @@ import Contest from './features/Contest/Contest/Contest';
 import message from './features/message/message';
 import ProposalManagerment from './features/admin/proposal/index';
 import approveProposal from './features/admin/proposal/approveProposal';
+import TradingPost from './features/exchange/components/TradingPost/TradingPost';
+import TradingPostDetailPage from './features/exchange/components/TradingPostDetailPage.jsx/TradingPostDetailPage';
 
 function App() {
   return (
@@ -60,10 +62,11 @@ function App() {
         <Route path="/trading" component={Trading} exact />
 
         <PrivateRoute path="/trading/:id" component={Trading} exact roles={[1, 2]} />
+        <PrivateRoute path="/tradingPost/:postId" component={TradingPostDetailPage} exact roles={[0, 1, 2]} />
 
-        <PrivateRoute path="/group/:id" component={Group} exact roles={[1, 2]} />
+        <PrivateRoute path="/group/:id" component={Group} exact roles={[0, 1, 2]} />
 
-        <PrivateRoute path="/post/:postId" component={PostDetailPage} exact roles={[1, 2]} />
+        <PrivateRoute path="/post/:postId" component={PostDetailPage} exact roles={[0, 1, 2]} />
 
         <PrivateRoute path="/setting/account/:accountId" component={SettingAccount} exact roles={[2]} />
         {/* <PrivateRoute path="/setting/account/:accountId/edit" component={SettingAccount} exact roles={[2]} /> */}
@@ -78,6 +81,8 @@ function App() {
         {/* Message */}
         <PrivateRoute path="/message" component={message} exact roles={[0, 1, 2]} />
         <PrivateRoute path="/message/:id" component={message} exact roles={[0, 1, 2]} />
+        <PrivateRoute path="/TradingMessage" component={message} exact roles={[0, 1, 2]} />
+        <PrivateRoute path="/TradingMessage/:id" component={message} exact roles={[0, 1, 2]} />
 
         {/* Admin */}'
         
