@@ -107,22 +107,22 @@ export const denyPost = (postID) => {
     }
 }
 
-export const deletePost = () => {
-    return (dispatch) => {
-        const token = axioClient.getToken();
+// export const deletePost = () => {
+//     return (dispatch) => {
+//         const token = axioClient.getToken();
 
-        if (token) {
-            axioClient.setHeaderAuth(token)
-            axioClient.get('/posts')
-                .then((response) => {
-                    dispatch(getPosts())
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-        }
-    }
-}
+//         if (token) {
+//             axioClient.setHeaderAuth(token)
+//             axioClient.get('/posts')
+//                 .then((response) => {
+//                     dispatch(getPosts())
+//                 })
+//                 .catch((error) => {
+//                     console.log(error)
+//                 })
+//         }
+//     }
+// }
 
 export const setPosts = (payload) => {
     return {
